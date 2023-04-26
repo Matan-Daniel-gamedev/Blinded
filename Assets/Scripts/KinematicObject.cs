@@ -29,7 +29,8 @@ public class KinematicObject : MonoBehaviour
     protected Vector2 groundNormal;
     protected Rigidbody2D body;
     protected ContactFilter2D contactFilter;
-    protected RaycastHit2D[] hitBuffer = new RaycastHit2D[16];
+    protected static int bufSize = 16;
+    protected RaycastHit2D[] hitBuffer = new RaycastHit2D[bufSize];
 
     protected const float minMoveDistance = 0.001f;
     protected const float shellRadius = 0.01f;
@@ -86,18 +87,13 @@ public class KinematicObject : MonoBehaviour
     protected virtual void Update()
     {
         targetVelocity = Vector2.zero;
-        ComputeVelocity();
-    }
-
-    protected virtual void ComputeVelocity()
-    {
-
     }
 
     protected virtual void FixedUpdate()
     {
         //if already falling, fall faster than the jump speed, otherwise use normal gravity.
-        if (velocity.y < 0)
+        bool isFalling = velocity.y < 0;
+        if (isFalling)
             velocity += gravityModifier * Physics2D.gravity * Time.deltaTime;
         else
             velocity += Physics2D.gravity * Time.deltaTime;
@@ -133,7 +129,8 @@ public class KinematicObject : MonoBehaviour
                 var currentNormal = hitBuffer[i].normal;
 
                 //is this surface flat enough to land on?
-                if (currentNormal.y > minGroundNormalY)
+                bool isSurfaceFlat = currentNormal.y > minGroundNormalY;
+                if (isSurfaceFlat)
                 {
                     IsGrounded = true;
                     // if moving up, change the groundNormal to new surface normal.

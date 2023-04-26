@@ -39,7 +39,7 @@ public class LightsScript : MonoBehaviour {
 
 		//Activate or deactivate lights and set intensity
 
-		myLight.intensity = 1 - RenderSettings.ambientLight.grayscale;
+		myLight.intensity = 1 - RenderSettings.ambientLight.grayscale;//gray out rest of the area
 		myLight.gameObject.SetActive(areLightsOn);
 		
 	}

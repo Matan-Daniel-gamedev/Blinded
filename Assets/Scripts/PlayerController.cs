@@ -2,13 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
-using Platformer.Gameplay;
-using static Platformer.Core.Simulation;
-using Platformer.Model;
-using Platformer.Core;
-*/
-
 public class PlayerController : KinematicObject
 {
 
@@ -31,7 +24,6 @@ public class PlayerController : KinematicObject
     bool jump;
     Vector2 move;
     SpriteRenderer spriteRenderer;
-    //readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
     public Bounds Bounds => collider2d.bounds;
 
@@ -49,12 +41,13 @@ public class PlayerController : KinematicObject
         if (controlEnabled)
         {
             move.x = Input.GetAxis("Horizontal");
-            if (jumpState == JumpState.Grounded && Input.GetButtonDown("Jump"))
+            bool readyToJump = jumpState == JumpState.Grounded && Input.GetButtonDown("Jump");
+            bool jumpButtonUp = Input.GetButtonUp("Jump");
+            if (readyToJump)
                 jumpState = JumpState.PrepareToJump;
-            else if (Input.GetButtonUp("Jump"))
+            else if (jumpButtonUp)
             {
                 stopJump = true;
-                //Schedule<PlayerStopJump>().player = this;
             }
         }
         else
@@ -78,14 +71,12 @@ public class PlayerController : KinematicObject
             case JumpState.Jumping:
                 if (!IsGrounded)
                 {
-                    //Schedule<PlayerJumped>().player = this;
                     jumpState = JumpState.InFlight;
                 }
                 break;
             case JumpState.InFlight:
                 if (IsGrounded)
                 {
-                    //Schedule<PlayerLanded>().player = this;
                     jumpState = JumpState.Landed;
                 }
                 break;
@@ -95,7 +86,7 @@ public class PlayerController : KinematicObject
         }
     }
 
-    protected override void ComputeVelocity()
+    protected void ComputeVelocity()
     {
         if (jump && IsGrounded)
         {
@@ -111,9 +102,10 @@ public class PlayerController : KinematicObject
             }
         }
 
-        if (move.x > 0.01f)
+        float eps = 0.01f;
+        if (move.x > eps)
             spriteRenderer.flipX = false;
-        else if (move.x < -0.01f)
+        else if (move.x < -eps)
             spriteRenderer.flipX = true;
 
         targetVelocity = move * maxSpeed;

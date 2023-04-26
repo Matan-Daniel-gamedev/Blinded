@@ -33,7 +33,8 @@ public class Timer : MonoBehaviour
         if (timerIsRunning)
         {
             timerText.text = Math.Ceiling(tmpTime).ToString();
-            if (tmpTime > 0)
+            bool timerRunning = tmpTime > 0;
+            if (timerRunning)
             {
                 tmpTime -= Time.deltaTime;
             }
