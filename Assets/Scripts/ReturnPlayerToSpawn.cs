@@ -5,12 +5,16 @@ using UnityEngine;
 public class ReturnPlayerToSpawn : MonoBehaviour
 {
     GameObject Spawn;
-    Checkpoint checkpoint;
+    Checkpoint[] checkpoints;
     Timer Timer;
+
+    public float timerDuration = 10f;
+
     private void Start()
     {
         Spawn = GameObject.FindGameObjectWithTag("Spawn");
-        checkpoint = GameObject.Find("Player").GetComponent<Checkpoint>();
+        
+        checkpoints = GameObject.FindObjectsOfType<Checkpoint>();
         Timer = GameObject.Find("GameController").GetComponent<Timer>();
     }
 
@@ -19,8 +23,11 @@ public class ReturnPlayerToSpawn : MonoBehaviour
         if (col.tag == "Player")
         {
             col.gameObject.GetComponent<Transform>().position = Spawn.transform.position;
-            Timer.startCountdown();
-            checkpoint.wasTriggered = false;
+            Timer.startCountdown(timerDuration);
+            foreach(Checkpoint curr in checkpoints)
+            {
+                curr.wasTriggered = false;
+            }
         }
     }
 }

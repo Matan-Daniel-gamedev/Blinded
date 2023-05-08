@@ -6,16 +6,17 @@ public class Checkpoint : MonoBehaviour
 {
     Timer Timer;
     public bool wasTriggered = false;
+    public float timerDuration = 5f;
     private void Start()
     {
         Timer = GameObject.Find("GameController").GetComponent<Timer>();
     }
 
-    private void OnTriggerEnter2D(Collider2D col)
+    private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.tag == "Checkpoint" && !wasTriggered)
+        if (col.gameObject.tag == "Player" && !wasTriggered)
         {
-            Timer.startCountdown();
+            Timer.startCountdown(timerDuration);
             wasTriggered = true;
         }
     }

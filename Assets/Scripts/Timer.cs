@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,6 +10,9 @@ public class Timer : MonoBehaviour
     public float timerDuration = 5;
     private float tmpTime;
     public bool timerIsRunning = false;
+
+    const int infTime = -1;
+    const char infinity = '\u221E';
 
     private LightsScript lightsScript;
     private TextMeshProUGUI timerText;
@@ -40,17 +43,28 @@ public class Timer : MonoBehaviour
             }
             else
             {
-                lightsScript.areLightsOn = true;
-                tmpTime = 0;
-                timerIsRunning = false;
-
-                unlit.enabled = true;
-                lit.enabled = false;
+                turnOnBlindMode();
             }
         }
     }
 
-    public void startCountdown()
+    public void startCountdown(float duration)
+    {
+        if(duration == infTime)
+        {
+            turnOnBlindCountdown();
+            timerIsRunning = false;
+            timerText.text = infinity.ToString();
+        }
+        else
+        {
+            timerDuration = duration;
+            turnOnBlindCountdown();
+        }
+        
+    }
+
+    public void turnOnBlindCountdown()
     {
         lightsScript.areLightsOn = false;
         tmpTime = timerDuration;
@@ -58,5 +72,15 @@ public class Timer : MonoBehaviour
 
         unlit.enabled = false;
         lit.enabled = true;
+    }
+
+    public void turnOnBlindMode()
+    {
+        lightsScript.areLightsOn = true;
+        tmpTime = 0;
+        timerIsRunning = false;
+
+        unlit.enabled = true;
+        lit.enabled = false;
     }
 }

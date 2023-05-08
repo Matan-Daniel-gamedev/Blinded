@@ -5,20 +5,13 @@ using UnityEngine;
 public class PlayerController : KinematicObject
 {
 
-    /// <summary>
-    /// Max horizontal speed of the player.
-    /// </summary>
     public float maxSpeed = 7;
-    /// <summary>
-    /// Initial jump velocity at the start of a jump.
-    /// </summary>
     public float jumpTakeOffSpeed = 7;
 
     public JumpState jumpState = JumpState.Grounded;
     private bool stopJump;
-    /*internal new*/
+
     public Collider2D collider2d;
-    /*internal new*/
     public bool controlEnabled = true;
 
     bool jump;
@@ -42,10 +35,9 @@ public class PlayerController : KinematicObject
         {
             move.x = Input.GetAxis("Horizontal");
             bool readyToJump = jumpState == JumpState.Grounded && Input.GetButtonDown("Jump");
-            bool jumpButtonUp = Input.GetButtonUp("Jump");
             if (readyToJump)
                 jumpState = JumpState.PrepareToJump;
-            else if (jumpButtonUp)
+            else if (Input.GetButtonUp("Jump"))
             {
                 stopJump = true;
             }
@@ -86,9 +78,10 @@ public class PlayerController : KinematicObject
         }
     }
 
-    protected void ComputeVelocity()
+    protected override void ComputeVelocity()
     {
-        if (jump && IsGrounded)
+        bool readyToJump = jump && IsGrounded;
+        if (readyToJump)
         {
             velocity.y = jumpTakeOffSpeed * jumpModifier;
             jump = false;
@@ -96,7 +89,8 @@ public class PlayerController : KinematicObject
         else if (stopJump)
         {
             stopJump = false;
-            if (velocity.y > 0)
+            bool inAir = velocity.y > 0;
+            if (inAir)
             {
                 velocity.y = velocity.y * jumpDeceleration;
             }
