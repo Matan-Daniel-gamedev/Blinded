@@ -9,4 +9,14 @@ public class ButtonScripts : MonoBehaviour
     {
         SceneManager.LoadScene("Tutorial");
     }
+
+    public void startLevel(int number)
+    {
+        switch (number)
+        {
+            case 1:
+                SceneManager.LoadScene("Level 1");
+                break;
+        }
+    }
 }

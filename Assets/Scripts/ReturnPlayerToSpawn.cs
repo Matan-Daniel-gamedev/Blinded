@@ -23,7 +23,8 @@ public class ReturnPlayerToSpawn : MonoBehaviour
         if (col.tag == "Player")
         {
             col.gameObject.GetComponent<Transform>().position = Spawn.transform.position;
-            Timer.startCountdown(timerDuration);
+            //Timer.startCountdown(timerDuration);
+            Timer.turnOffBlindMode();
             foreach(Checkpoint curr in checkpoints)
             {
                 curr.wasTriggered = false;

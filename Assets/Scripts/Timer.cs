@@ -52,26 +52,31 @@ public class Timer : MonoBehaviour
     {
         if(duration == infTime)
         {
-            turnOnBlindCountdown();
+            turnOnBlindCountdown(duration);
             timerIsRunning = false;
             timerText.text = infinity.ToString();
         }
         else
         {
-            timerDuration = duration;
-            turnOnBlindCountdown();
+            turnOnBlindCountdown(duration);
         }
         
     }
 
-    public void turnOnBlindCountdown()
+    public void turnOnBlindCountdown(float duration)
     {
+        timerDuration = duration;
         lightsScript.areLightsOn = false;
         tmpTime = timerDuration;
         timerIsRunning = true;
 
         unlit.enabled = false;
         lit.enabled = true;
+    }
+
+    public void turnOffBlindMode()
+    {
+        startCountdown(infTime);
     }
 
     public void turnOnBlindMode()
