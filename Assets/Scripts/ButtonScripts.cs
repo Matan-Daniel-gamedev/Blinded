@@ -15,7 +15,7 @@ public class ButtonScripts : MonoBehaviour
         switch (number)
         {
             case 1:
-                SceneManager.LoadScene("Level 1");
+                SceneManager.LoadScene("Level0");
                 break;
         }
     }

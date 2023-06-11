@@ -16,7 +16,8 @@ public class Checkpoint : MonoBehaviour
     {
         if (col.gameObject.tag == "Player" && !wasTriggered)
         {
-            Timer.startCountdown(timerDuration);
+            //Timer.startCountdown(timerDuration);
+            Timer.turnOnBlindMode();
             wasTriggered = true;
         }
     }
