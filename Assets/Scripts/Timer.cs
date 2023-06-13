@@ -39,7 +39,7 @@ public class Timer : MonoBehaviour
         {
             if (tmpTime > 100)
             {
-                timerText.text = infinity.ToString();
+                //timerText.text = infinity.ToString();
             }
             else
             {
@@ -63,7 +63,8 @@ public class Timer : MonoBehaviour
         {
             turnOnBlindCountdown(duration);
             timerIsRunning = false;
-            timerText.text = infinity.ToString();
+            //timerText.text = infinity.ToString();
+            timerText.text = "";
         }
         else
         {
@@ -94,7 +95,8 @@ public class Timer : MonoBehaviour
         lightsScript.areLightsOn = true;
         tmpTime = 0;
         timerIsRunning = false;
-        timerText.text = infinity.ToString();
+        //timerText.text = infinity.ToString();
+        timerText.text = "";
         unlit.enabled = true;
         lit.enabled = false;
     }

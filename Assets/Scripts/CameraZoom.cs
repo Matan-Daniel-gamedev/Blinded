@@ -16,6 +16,16 @@ public class CameraZoom : MonoBehaviour
     private float zoomDirection = 1f;
     private float zoomSpeed = 1f;
 
+    private GameObject player;
+    private PlayerController playerController;
+
+    private void Awake()
+    {
+        player = GameObject.FindWithTag("Player");
+        playerController = player.GetComponent<PlayerController>();
+        playerController.enabled = false;
+    }
+
     private void Start()
     {
         mainCamera = GetComponent<Camera>();
@@ -45,6 +55,8 @@ public class CameraZoom : MonoBehaviour
 
             if (currentTime >= stayDuration)
             {
+                //playerController.enabled = false;
+
                 isStaying = false;
                 isZoomingIn = true;
                 currentTime = 0f;
@@ -54,11 +66,14 @@ public class CameraZoom : MonoBehaviour
         }
         else if (isZoomingIn)
         {
+            //playerController.enabled = false;
+
             currentSize += zoomSpeed * Time.deltaTime * zoomDirection;
             mainCamera.orthographicSize = currentSize;
 
             if (currentSize <= startSize)
             {
+                playerController.enabled = true;
                 currentSize = startSize;
                 mainCamera.orthographicSize = currentSize;
                 isZoomingIn = false;
@@ -76,6 +91,7 @@ public class CameraZoom : MonoBehaviour
     {
         if (!isZoomingOut && !isStaying && !isZoomingIn)
         {
+            playerController.enabled = false;
             isZoomingOut = true;
         }
     }
